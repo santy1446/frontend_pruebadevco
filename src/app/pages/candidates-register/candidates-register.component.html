@@ -1,0 +1,85 @@
+<div class="row actions-section">
+    <div class="form-group col-12 col-md-6 col-sm-12 col-xs-12 row">
+        <button class="btn" (click)="id_edit = false; form_candidate.reset(); open(content, 'xl')"
+        >Nuevo candidato</button>
+        <span class="icon-file-excel" (click)="excelTable()"></span>
+    </div>
+    <div class="form-group col-12 col-md-6 col-sm-12 col-xs-12">
+        <input class="form-control search-input" type="text" placeholder="Búsqueda" [(ngModel)]="searchValue">
+    </div>
+</div>
+<div class="form-group col-12">
+    <ag-grid-angular class="ag-theme-alpine grid-table" [pagination]="true"
+        [paginationPageSize]="10" [rowData]="list_candidates" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+        [quickFilterText]="searchValue" (gridReady)="onGridReady($event)" [rowClass]="rowClass">
+    </ag-grid-angular>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{id_edit ? 'Actualizar' : 'Nuevo'}} candidato</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <form [formGroup]="form_candidate" class="form-data">
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Indentificación <strong class="obligatorio">*</strong></label>
+                    <input type="text" class="form-control" formControlName="identification_candidate">
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Nombre candidato <strong class="obligatorio">*</strong></label>
+                    <input type="text" class="form-control" formControlName="name_candidate">
+                </div>
+
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Rol <strong class="obligatorio">*</strong></label>
+                    <select name="" id="" class="form-control" formControlName="role_id">
+                        <option value="">-- Seleccionar --</option>
+                        <option *ngFor="let item of list_roles" value="{{item.id}}">{{item.role_name}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Fecha postulación <strong class="obligatorio">*</strong></label>
+                    <input type="date" class="form-control" formControlName="date_postulation">
+                </div>
+
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Aspiración salarial <strong class="obligatorio">*</strong></label>
+                    <input type="number" class="form-control" formControlName="wage_aspiration">
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Email candidato <strong class="obligatorio">*</strong></label>
+                    <input type="text" class="form-control" formControlName="email_candidate">
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Email evaluador <strong class="obligatorio">*</strong></label>
+                    <input type="text" class="form-control" formControlName="email_evaluator">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark ok-button" *ngIf="!id_edit" (click)="saveNewCandidate()">Guardar</button>
+        <button type="button" class="btn btn-outline-dark ok-button" *ngIf="id_edit" (click)="updateCandidate()">Actualizar</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancelar</button>
+    </div>
+</ng-template>
+
+<ng-template #delete_modal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Eliminar candidato</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>¿Esta seguro que desea eliminar este registro permanentemente?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark ok-button" (click)="deleteCandidate()">Eliminar</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancelar</button>
+    </div>
+</ng-template>

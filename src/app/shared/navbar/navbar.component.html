@@ -1,0 +1,16 @@
+<div class="row_flex">
+    <span class="icon-menu3" data-toggle="dropdown" aria-haspopup="true"
+    aria-expanded="false"></span>
+    <div class="title_container">
+        <h5>{{title}}</h5>
+    </div>
+
+    <ul class="dropdown-menu">
+        <li (click)="changeRoute('REGISTER')">
+            <a class="dropdown-item" >Candidatos</a>
+        </li>
+        <li (click)="changeRoute('PHASES')">
+            <a class="dropdown-item" >Gestionar etapas</a>
+        </li>
+    </ul>
+</div>

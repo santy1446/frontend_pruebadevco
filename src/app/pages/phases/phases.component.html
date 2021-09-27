@@ -1,0 +1,100 @@
+<div class="row_flex container_tabs">
+    <div class="tab" (click)="changeTab(1)" [ngClass]="{'tab_selected': current_tab == 1}">
+        Etapa 1
+    </div>
+    <div class="tab" (click)="changeTab(2)" [ngClass]="{'tab_selected': current_tab == 2}">
+        Etapa 2
+    </div>
+    <div class="tab" (click)="changeTab(3)" [ngClass]="{'tab_selected': current_tab == 3}">
+        Etapa 3
+    </div>
+</div>
+<div class="row filter-section">
+    <div class="form-group col-12 col-md-6 col-sm-12 col-xs-12 row">
+    </div>
+    <div class="form-group col-12 col-md-6 col-sm-12 col-xs-12">
+        <input class="form-control" type="text" placeholder="Búsqueda" [(ngModel)]="searchValue">
+    </div>
+</div>
+<div class="form-group col-12">
+    <ag-grid-angular class="ag-theme-alpine grid-table" [pagination]="true"
+        [paginationPageSize]="10" [rowData]="list_candidates" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+        [quickFilterText]="searchValue" (gridReady)="onGridReady($event)" [rowClass]="rowClass">
+    </ag-grid-angular>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Resultados etapa {{current_modal == 'PHASE1' ? '1' : current_modal == 'PHASE2' ? '2':'3'}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row" [ngSwitch]="current_modal">
+
+            <form [formGroup]="form_phase1" class="form-data" *ngSwitchCase="'PHASE1'">
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Calificación teórica <strong class="obligatorio">*</strong></label>
+                    <input type="number" class="form-control" formControlName="theoretical_qualification">
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Calificación técnica <strong class="obligatorio">*</strong></label>
+                    <input type="number" class="form-control" formControlName="technical_qualification">
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Evaluador <strong class="obligatorio">*</strong></label>
+                    <input type="text" class="form-control" formControlName="evaluator_name">
+                </div>
+
+                <div class="form-group col-12 col-md-12 col-sm-12 col-xs-12">
+                    <label for="">Comentarios <strong class="obligatorio">*</strong></label>
+                    <textarea class="form-control" name="" id="" cols="30" rows="3" formControlName="comments"></textarea>
+                </div>
+            </form>
+
+            <form [formGroup]="form_phase2" class="form-data" *ngSwitchCase="'PHASE2'">
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Calificación Psicológica <strong class="obligatorio">*</strong></label>
+                    <input type="number" class="form-control" formControlName="psychological_qualification">
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Calificación médica <strong class="obligatorio">*</strong></label>
+                    <input type="number" class="form-control" formControlName="medical_qualification">
+                </div>
+
+                <div class="form-group col-12 col-md-12 col-sm-12 col-xs-12">
+                    <label for="">Comentarios <strong class="obligatorio">*</strong></label>
+                    <textarea class="form-control" name="" id="" cols="30" rows="3" formControlName="comments"></textarea>
+                </div>
+            </form>
+
+            <form [formGroup]="form_phase3" class="form-data" *ngSwitchCase="'PHASE3'">
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Promedio<strong class="obligatorio">*</strong></label>
+                    <input type="number" class="form-control" formControlName="average">
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Aprobado<strong class="obligatorio">*</strong></label>
+                    <select class="form-control" name="" id="" formControlName="aprove">
+                        <option value="SI">SI</option>
+                        <option value="NO">NO</option>
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Salario <strong class="obligatorio" *ngIf="aprove_candidate">*</strong></label>
+                    <input type="number" class="form-control" formControlName="salary">
+                </div>
+                <div class="form-group col-12 col-md-4 col-sm-12 col-xs-12">
+                    <label for="">Fecha inicio <strong class="obligatorio" *ngIf="aprove_candidate">*</strong></label>
+                    <input type="date" class="form-control" formControlName="first_day">
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark ok-button" (click)="saveDataPhase()">Guardar</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancelar</button>
+    </div>
+</ng-template>
